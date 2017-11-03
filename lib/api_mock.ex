@@ -38,11 +38,16 @@ defmodule ApiMock do
   end
 
   defp generate_endpoint(id) do
-    %{
-      "name" => ApiMock.Randomizer.randomizer(8, :alpha),
-      "id" => id,
-      "endpoint" => get_random_page()
-    }
+    with name <- ApiMock.Randomizer.randomizer(8, :alpha),
+         {:ok, endpoint} <- get_random_page() do
+      %{
+        "name" => name,
+        "id" => id,
+        "endpoint" => endpoint
+      }
+    else
+      e -> e
+    end
   end
 
   defp generate_endpoints() do
