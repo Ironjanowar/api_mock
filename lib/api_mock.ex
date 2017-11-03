@@ -18,12 +18,23 @@ defmodule ApiMock do
   # end
 
   # Fancy way
+  # defp get_random_page() do
+  #   wiki = "https://en.wikipedia.org/wiki/Special:Random"
+
+  #   HTTPoison.get(wiki)
+  #   |> (fn {:ok, %{headers: headers}} -> for {k,v} <- headers, k == "Location", do: v end).()
+  # end
+
+  # Very fancy way
   defp get_random_page() do
     wiki = "https://en.wikipedia.org/wiki/Special:Random"
 
-    HTTPoison.get(wiki)
-    |> (fn {:ok, %{headers: headers}} -> headers end).()
-    |> (fn headers -> for {k,v} <- headers, k == "Location", do: v end).()
+    with {:ok, %{status_code: 302, headers: headers}} <- HTTPoison.get(wiki),
+         {_, url} <- Enum.find(headers, fn {k, _} -> k == "Location" end) do
+      {:ok, url}
+    else
+      _ -> {:error, :no_url_for_you}
+    end
   end
 
   defp generate_endpoint(id) do
