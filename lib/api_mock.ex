@@ -5,16 +5,25 @@ defmodule ApiMock do
     GenServer.start_link __MODULE__, :ok, [name: :mock_server]
   end
 
-  defp filter_header({"Location", _}), do: true
-  defp filter_header(_), do: false
+  # defp filter_header({"Location", _}), do: true
+  # defp filter_header(_), do: false
 
+  # defp get_random_page() do
+  #   wiki = "https://en.wikipedia.org/wiki/Special:Random"
+
+  #   HTTPoison.get(wiki)
+  #   |> (fn {:ok, %{headers: headers}} -> headers end).()
+  #   |> Enum.filter(&filter_header/1)
+  #   |> (fn [{"Location", url} | _] -> url end).()
+  # end
+
+  # Fancy way
   defp get_random_page() do
     wiki = "https://en.wikipedia.org/wiki/Special:Random"
 
     HTTPoison.get(wiki)
     |> (fn {:ok, %{headers: headers}} -> headers end).()
-    |> Enum.filter(&filter_header/1)
-    |> (fn [{"Location", url} | _] -> url end).()
+    |> (fn headers -> for {k,v} <- headers, k == "Location", do: v end).()
   end
 
   defp generate_endpoint(id) do
