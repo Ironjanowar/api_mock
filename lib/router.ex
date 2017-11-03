@@ -22,4 +22,14 @@ defmodule ApiMock.Router do
   get "/*_rest" do
     conn |> send_resp(404, "Nope here zorry!")
   end
+
+  patch "/reset_routes" do
+    ApiMock.reset_routes
+
+    conn |> send_resp(200, "Meh")
+  end
+
+  patch "/*_rest" do
+    conn |> send_resp(404, "Nope here zorry!")
+  end
 end

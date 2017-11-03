@@ -65,15 +65,26 @@ defmodule ApiMock do
     GenServer.call :mock_server, :get_state
   end
 
+  def reset_routes() do
+    GenServer.cast :mock_server, :reset_routes
+  end
+
   def get_endpoints() do
     GenServer.call :mock_server, :get_endpoints
   end
 
+  # Calls
   def handle_call(:get_state, _from, state) do
     {:reply, state, state}
   end
 
   def handle_call(:get_endpoints, _from, %{endpoints: endpoints}=state) do
     {:reply, endpoints, state}
+  end
+
+  # Casts
+  def handle_cast(:reset_routes, _state) do
+    endpoints = generate_endpoints()
+    {:noreply, %{endpoints: endpoints}}
   end
 end
