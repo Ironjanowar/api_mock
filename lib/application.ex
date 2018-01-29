@@ -17,10 +17,11 @@ defmodule ApiMock.Application do
 
     case Supervisor.start_link(children, opts) do
       {:ok, _} = ok ->
-        Logger.info "Starting ApiMock"
+        Logger.info("Starting ApiMock")
         ok
+
       {:error, _} = error ->
-        Logger.error "Error starting ApiMock"
+        Logger.error("Error starting ApiMock")
         error
     end
   end

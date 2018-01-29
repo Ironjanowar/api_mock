@@ -2,7 +2,7 @@ defmodule ApiMock do
   use GenServer
 
   def start_link() do
-    GenServer.start_link __MODULE__, :ok, [name: :mock_server]
+    GenServer.start_link(__MODULE__, :ok, name: :mock_server)
   end
 
   # defp filter_header({"Location", _}), do: true
@@ -62,15 +62,15 @@ defmodule ApiMock do
   end
 
   def get_state() do
-    GenServer.call :mock_server, :get_state
+    GenServer.call(:mock_server, :get_state)
   end
 
   def reset_routes() do
-    GenServer.cast :mock_server, :reset_routes
+    GenServer.cast(:mock_server, :reset_routes)
   end
 
   def get_endpoints() do
-    GenServer.call :mock_server, :get_endpoints
+    GenServer.call(:mock_server, :get_endpoints)
   end
 
   # Calls
@@ -78,7 +78,7 @@ defmodule ApiMock do
     {:reply, state, state}
   end
 
-  def handle_call(:get_endpoints, _from, %{endpoints: endpoints}=state) do
+  def handle_call(:get_endpoints, _from, %{endpoints: endpoints} = state) do
     {:reply, endpoints, state}
   end
 

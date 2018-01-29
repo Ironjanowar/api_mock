@@ -3,11 +3,11 @@ defmodule ApiMock.Router do
 
   require Logger
 
-  plug Plug.Parsers, parsers: [:urlencoded]
-  plug Plug.Logger
+  plug(Plug.Parsers, parsers: [:urlencoded])
+  plug(Plug.Logger)
 
-  plug :match
-  plug :dispatch
+  plug(:match)
+  plug(:dispatch)
 
   get "/status" do
     conn |> send_resp(200, "ok")
@@ -16,7 +16,7 @@ defmodule ApiMock.Router do
   get "/endpoints" do
     res = ApiMock.get_endpoints()
 
-    conn |> send_resp(200, res |> Poison.encode!)
+    conn |> send_resp(200, res |> Poison.encode!())
   end
 
   get "/*_rest" do
@@ -24,7 +24,7 @@ defmodule ApiMock.Router do
   end
 
   patch "/reset_routes" do
-    ApiMock.reset_routes
+    ApiMock.reset_routes()
 
     conn |> send_resp(200, "Meh")
   end
